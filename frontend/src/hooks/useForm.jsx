@@ -19,6 +19,7 @@ export const useForm = (initialValues) => {
 
   return {
     values,
+    setValues,
     handleChange,
     resetForm,
   };

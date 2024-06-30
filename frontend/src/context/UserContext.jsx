@@ -1,9 +1,10 @@
 // context/UserContext.js
 
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useContext, useEffect } from "react";
 import {
   fetchUsers,
   addUser as addUserService,
+  editUser as editUserService,
   deleteUser as deleteUserService,
 } from "../utils/api.js";
 // import dotenv from "dotenv";
@@ -54,10 +55,25 @@ const userReducer = (state, action) => {
         ...state,
         error: action.payload,
       };
+    case "UPDATE_USER_SUCCESS":
+      const updatedUsers = state.users.map((user) =>
+        user.id === action.payload.id ? action.payload : user
+      );
+      return {
+        ...state,
+        users: updatedUsers,
+      };
+    case "UPDATE_USER_FAILURE":
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }
 };
+
+export const useUserContext = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
@@ -86,6 +102,20 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const editUser = async (userId, updatedUserData) => {
+    try {
+      const updatedUser = await editUserService(
+        apiUrl,
+        userId,
+        updatedUserData
+      );
+      dispatch({ type: "UPDATE_USER_SUCCESS", payload: updatedUser });
+    } catch (error) {
+      dispatch({ type: "UPDATE_USER_FAILURE", payload: error.message });
+      throw error; // Propagate the error for handling in components
+    }
+  };
+
   const handleDeleteUser = async (userId) => {
     try {
       await deleteUserService(apiUrl, userId);
@@ -102,7 +132,8 @@ export const UserProvider = ({ children }) => {
         users: state.users,
         loading: state.loading,
         error: state.error,
-        addUserService,
+        editUserService,
+        addUser,
         handleDeleteUser,
       }}
     >
