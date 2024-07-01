@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
 import { Table, Button, Spinner } from "react-bootstrap";
-import { UserContext } from "../context/UserContext.jsx";
+import { useUserContext } from "../context/UserContext.jsx";
 import UserFormModal from "./UserFormModal";
+import "../index.css";
 
 const UserTable = () => {
   const { users, loading, error, handleDeleteUser, setSelectedUser } =
-    useContext(UserContext);
+    useUserContext();
   const handleEditUser = (user) => {
     setSelectedUser(user);
   };
@@ -33,14 +34,22 @@ const UserTable = () => {
       <tbody>
         {users.map((user) => (
           <tr key={user._id}>
-            <td>{user.firstName}</td>
-            <td>{user.lastName}</td>
-            <td>{user.email}</td>
-            <td>
-              <Button variant="warning" onClick={() => handleEditUser(user)}>
+            <td className="user-table-align">{user.firstName}</td>
+            <td className="user-table-align">{user.lastName}</td>
+            <td className="user-table-align">{user.email}</td>
+            <td className="d-flex justify-content-center align-items-center gap-2">
+              <Button
+                variant="outline-primary"
+                className="action-btn"
+                onClick={() => handleEditUser(user)}
+              >
                 Edit
               </Button>
-              <Button onClick={() => onDelete(user._id)} variant="danger">
+              <Button
+                className="action-btn"
+                onClick={() => onDelete(user._id)}
+                variant="outline-danger"
+              >
                 Delete
               </Button>
             </td>

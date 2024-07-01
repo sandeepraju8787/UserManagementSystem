@@ -58,7 +58,7 @@ const userReducer = (state, action) => {
       };
     case "UPDATE_USER_SUCCESS":
       const updatedUsers = state.users.map((user) =>
-        user.id === action.payload.id ? action.payload : user
+        user._id === action.payload._id ? action.payload : user
       );
       return {
         ...state,
@@ -142,7 +142,8 @@ export const UserProvider = ({ children }) => {
         users: state.users,
         loading: state.loading,
         error: state.error,
-        editUserService,
+        selectedUser: state.selectedUser,
+        editUser,
         addUser,
         handleDeleteUser,
         setSelectedUser,

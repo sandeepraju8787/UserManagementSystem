@@ -44,20 +44,17 @@ const UserFormModal = () => {
 
   const handleSubmit = (e) => {
     // e.preventDefault();
-    console.log("Submit button clicked");
     if (selectedUser) {
-      // Update existing user
       editUser(selectedUser._id, values);
     } else {
-      // Add new user
       addUser(values);
     }
-    handleClose(); // Close modal after submission
+    handleClose();
   };
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="outline-primary" onClick={handleShow}>
         {selectedUser ? "Edit User" : "Add User"}
       </Button>
 
@@ -114,7 +111,8 @@ const UserFormModal = () => {
 
             <Button
               id="addUser"
-              variant="primary"
+              variant="outline-primary"
+              className="action-btn"
               type="submit"
               onClick={handleSubmit}
             >

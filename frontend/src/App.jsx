@@ -8,10 +8,12 @@ function App() {
   return (
     <UserProvider>
       <AppNavbar />
-      <Container className="mt-5">
+      <Container className="mt-6">
         <Row>
-          <Col>
-            <h1>User List</h1>
+          <Col className="text-center">
+            <h4 id="title" className="mt-2">
+              Users
+            </h4>
             <UserTable />
           </Col>
         </Row>

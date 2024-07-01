@@ -1,6 +1,3 @@
-// utils/api.js
-
-// Function to fetch all users
 export const fetchUsers = async (apiUrl) => {
   try {
     const response = await fetch(apiUrl);
@@ -35,9 +32,10 @@ export const addUser = async (apiUrl, user) => {
   }
 };
 
-export const editUser = async (userId, updatedUserData) => {
+export const editUser = async (apiUrl, userId, updatedUserData) => {
   try {
-    const response = await fetch(`${apiUrl}/${userId}`, {
+    console.log(`${apiUrl}/edit/${userId}`);
+    const response = await fetch(`${apiUrl}/edit/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
