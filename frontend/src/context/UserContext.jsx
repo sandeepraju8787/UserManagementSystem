@@ -15,6 +15,7 @@ export const UserContext = createContext();
 
 const initialState = {
   users: [],
+  selectedUser: null,
   loading: true,
   error: null,
 };
@@ -67,6 +68,11 @@ const userReducer = (state, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case "SET_SELECTED_USER":
+      return {
+        ...state,
+        selectedUser: action.payload,
       };
     default:
       return state;
@@ -126,6 +132,10 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const setSelectedUser = (user) => {
+    dispatch({ type: "SET_SELECTED_USER", payload: user });
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -135,6 +145,7 @@ export const UserProvider = ({ children }) => {
         editUserService,
         addUser,
         handleDeleteUser,
+        setSelectedUser,
       }}
     >
       {children}

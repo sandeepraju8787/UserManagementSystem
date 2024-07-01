@@ -4,7 +4,7 @@ import { useForm } from "../hooks/useForm";
 import { useUserContext } from "../context/UserContext";
 
 const UserFormModal = () => {
-  const { addUser, editUser, selectedUser } = useUserContext(); // Using context for state management
+  const { addUser, editUser, selectedUser, setSelectedUser } = useUserContext(); // Using context for state management
   const { values, setValues, handleChange, resetForm } = useForm({
     firstName: "",
     lastName: "",
@@ -20,6 +20,7 @@ const UserFormModal = () => {
         lastName: selectedUser.lastName || "",
         email: selectedUser.email || "",
       });
+      setShow(true);
     } else {
       // Clear form fields if no selectedUser (for adding new user)
       setValues({
@@ -27,12 +28,14 @@ const UserFormModal = () => {
         lastName: "",
         email: "",
       });
+      setShow(false);
     }
   }, [selectedUser, setValues]);
 
   const handleClose = () => {
     setShow(false);
     resetForm();
+    setSelectedUser(null);
   };
 
   const handleShow = () => {
@@ -48,13 +51,8 @@ const UserFormModal = () => {
     } else {
       // Add new user
       addUser(values);
-      console.log("hi clicked");
     }
     handleClose(); // Close modal after submission
-  };
-
-  const printHello = () => {
-    console.log("ehllo");
   };
 
   return (
