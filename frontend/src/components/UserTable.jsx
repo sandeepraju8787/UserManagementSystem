@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Table, Button, Spinner } from "react-bootstrap";
 import { useUserContext } from "../context/UserContext.jsx";
 import UserFormModal from "./UserFormModal";
@@ -6,8 +6,16 @@ import "../index.css";
 import CustomPagination from "./Pagination.jsx";
 
 const UserTable = () => {
-  const { users, loading, error, handleDeleteUser, setSelectedUser } =
-    useUserContext();
+  const {
+    users,
+    loading,
+    error,
+    handleDeleteUser,
+    setSelectedUser,
+    currentPage,
+    setCurrentPage,
+  } = useUserContext();
+
   const handleEditUser = (user) => {
     setSelectedUser(user);
   };

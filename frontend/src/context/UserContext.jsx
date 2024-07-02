@@ -1,5 +1,3 @@
-// context/UserContext.js
-
 import { createContext, useReducer, useContext, useEffect } from "react";
 import {
   fetchUsers,
@@ -7,9 +5,6 @@ import {
   editUser as editUserService,
   deleteUser as deleteUserService,
 } from "../utils/api.js";
-// import dotenv from "dotenv";
-
-// dotenv.config();
 
 export const UserContext = createContext();
 
@@ -18,6 +13,7 @@ const initialState = {
   selectedUser: null,
   loading: true,
   error: null,
+  currentPage: 1, // Added currentPage to track the current page
 };
 
 const userReducer = (state, action) => {
@@ -25,9 +21,10 @@ const userReducer = (state, action) => {
     case "FETCH_USERS_SUCCESS":
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.users,
         loading: false,
         error: null,
+        currentPage: action.payload.page,
       };
     case "FETCH_USERS_FAILURE":
       return {
@@ -47,9 +44,13 @@ const userReducer = (state, action) => {
         error: action.payload,
       };
     case "DELETE_USER_SUCCESS":
+      // Filter out the deleted user
+      const updatedUsers = state.users.filter(
+        (user) => user._id !== action.payload
+      );
       return {
         ...state,
-        users: state.users.filter((user) => user._id !== action.payload),
+        users: updatedUsers,
       };
     case "DELETE_USER_FAILURE":
       return {
@@ -57,12 +58,13 @@ const userReducer = (state, action) => {
         error: action.payload,
       };
     case "UPDATE_USER_SUCCESS":
-      const updatedUsers = state.users.map((user) =>
+      // Update the user in the list
+      const modifiedUsers = state.users.map((user) =>
         user._id === action.payload._id ? action.payload : user
       );
       return {
         ...state,
-        users: updatedUsers,
+        users: modifiedUsers,
       };
     case "UPDATE_USER_FAILURE":
       return {
@@ -83,20 +85,25 @@ export const useUserContext = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
-  const apiUrl = "http://localhost:4000/api/users"; // Default to localhost
+  const apiUrl = "http://localhost:4000/api/users";
+  const limit = 10;
 
   useEffect(() => {
-    const fetchAllUsers = async () => {
+    console.log("enterd useeffect");
+    const fetchUsersByPage = async () => {
+      console.log(`calling data for page ${state.currentPage}`);
       try {
-        const users = await fetchUsers(apiUrl);
-        dispatch({ type: "FETCH_USERS_SUCCESS", payload: users });
+        const { users, page } = await fetchUsers(
+          `${apiUrl}?page=${state.currentPage}&limit=${limit}`
+        );
+        dispatch({ type: "FETCH_USERS_SUCCESS", payload: { users, page } });
       } catch (error) {
         dispatch({ type: "FETCH_USERS_FAILURE", payload: error.message });
       }
     };
 
-    fetchAllUsers();
-  }, [apiUrl]);
+    fetchUsersByPage();
+  }, [state.currentPage]);
 
   const addUser = async (user) => {
     try {
@@ -104,7 +111,6 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: "ADD_USER_SUCCESS", payload: newUser });
     } catch (error) {
       dispatch({ type: "ADD_USER_FAILURE", payload: error.message });
-      throw error; // Propagate the error for handling in components
     }
   };
 
@@ -118,7 +124,6 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: "UPDATE_USER_SUCCESS", payload: updatedUser });
     } catch (error) {
       dispatch({ type: "UPDATE_USER_FAILURE", payload: error.message });
-      throw error; // Propagate the error for handling in components
     }
   };
 
@@ -128,13 +133,15 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: "DELETE_USER_SUCCESS", payload: userId });
     } catch (error) {
       dispatch({ type: "DELETE_USER_FAILURE", payload: error.message });
-      throw error; // Propagate the error for handling in components
     }
   };
 
   const setSelectedUser = (user) => {
     dispatch({ type: "SET_SELECTED_USER", payload: user });
   };
+
+  const setCurrentPage = (page) =>
+    dispatch({ type: "SET_CURRENT_PAGE", payload: page });
 
   return (
     <UserContext.Provider
@@ -143,6 +150,9 @@ export const UserProvider = ({ children }) => {
         loading: state.loading,
         error: state.error,
         selectedUser: state.selectedUser,
+        currentPage: state.currentPage,
+        fetchUsers,
+        setCurrentPage, // Setter function for currentPage
         editUser,
         addUser,
         handleDeleteUser,

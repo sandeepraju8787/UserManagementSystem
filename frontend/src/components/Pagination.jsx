@@ -1,51 +1,35 @@
 import { Pagination } from "react-bootstrap";
+import { useUserContext } from "../context/UserContext";
+import { useState } from "react";
 
-const CustomPagination = ({ currentPage, totalPages, onPageChange }) => {
-  // Calculate the range of page numbers to display
-  const range = (start, end) => {
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+const CustomPagination = () => {
+  const { currentPage, setCurrentPage, fetchUsers } = useUserContext();
+  //   const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 4; // Assuming 4 pages based on your earlier data
+
+  const handlePageChange = (page) => {
+    console.log(`setting page number ${page} in pagi compn`);
+    setCurrentPage(page);
+    fetchUsers("http://localhost:4000/api/users?page=2&limit=1"); // Fetch users for the selected page
   };
 
-  // Define the number of pages to display
-  const pageRange = 5; // Adjust as needed
-
-  // Calculate the start and end of the page numbers
-  let startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
-  let endPage = startPage + pageRange - 1;
-
-  // Adjust endPage if it exceeds totalPages
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(1, endPage - pageRange + 1);
+  let items = [];
+  for (let number = 1; number <= totalPages; number++) {
+    items.push(
+      <Pagination.Item
+        key={number}
+        active={number === currentPage}
+        onClick={() => handlePageChange(number)}
+      >
+        {number}
+      </Pagination.Item>
+    );
   }
 
-  // Generate array of page numbers to display
-  const pages = range(startPage, endPage);
-
   return (
-    <Pagination>
-      <Pagination.First onClick={() => onPageChange(1)} />
-      <Pagination.Prev
-        onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-        disabled={currentPage === 1}
-      />
-
-      {pages.map((page) => (
-        <Pagination.Item
-          key={page}
-          active={page === currentPage}
-          onClick={() => onPageChange(page)}
-        >
-          {page}
-        </Pagination.Item>
-      ))}
-
-      <Pagination.Next
-        onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-        disabled={currentPage === totalPages}
-      />
-      <Pagination.Last onClick={() => onPageChange(totalPages)} />
-    </Pagination>
+    <div>
+      <Pagination>{items}</Pagination>
+    </div>
   );
 };
 

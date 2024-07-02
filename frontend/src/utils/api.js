@@ -1,5 +1,6 @@
 export const fetchUsers = async (apiUrl) => {
   try {
+    console.log("now printing ", apiUrl);
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error("Failed to fetch users");
