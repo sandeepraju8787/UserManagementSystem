@@ -1,6 +1,3 @@
-// utils/api.js
-
-// Function to fetch all users
 export const fetchUsers = async (apiUrl) => {
   try {
     const response = await fetch(apiUrl);
@@ -17,7 +14,8 @@ export const fetchUsers = async (apiUrl) => {
 // Function to add a new user
 export const addUser = async (apiUrl, user) => {
   try {
-    const response = await fetch(apiUrl, {
+    console.log(`${apiUrl}/add`);
+    const response = await fetch(`${apiUrl}/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,6 +29,25 @@ export const addUser = async (apiUrl, user) => {
   } catch (error) {
     console.error("Error adding user:", error);
     throw error;
+  }
+};
+
+export const editUser = async (apiUrl, userId, updatedUserData) => {
+  try {
+    console.log(`${apiUrl}/edit/${userId}`);
+    const response = await fetch(`${apiUrl}/edit/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedUserData),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to edit user");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Error editing user: ${error.message}`);
   }
 };
 

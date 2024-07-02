@@ -1,9 +1,10 @@
 // context/UserContext.js
 
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useContext, useEffect } from "react";
 import {
   fetchUsers,
   addUser as addUserService,
+  editUser as editUserService,
   deleteUser as deleteUserService,
 } from "../utils/api.js";
 // import dotenv from "dotenv";
@@ -14,6 +15,7 @@ export const UserContext = createContext();
 
 const initialState = {
   users: [],
+  selectedUser: null,
   loading: true,
   error: null,
 };
@@ -47,17 +49,37 @@ const userReducer = (state, action) => {
     case "DELETE_USER_SUCCESS":
       return {
         ...state,
-        users: state.users.filter((user) => user.id !== action.payload),
+        users: state.users.filter((user) => user._id !== action.payload),
       };
     case "DELETE_USER_FAILURE":
       return {
         ...state,
         error: action.payload,
       };
+    case "UPDATE_USER_SUCCESS":
+      const updatedUsers = state.users.map((user) =>
+        user._id === action.payload._id ? action.payload : user
+      );
+      return {
+        ...state,
+        users: updatedUsers,
+      };
+    case "UPDATE_USER_FAILURE":
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case "SET_SELECTED_USER":
+      return {
+        ...state,
+        selectedUser: action.payload,
+      };
     default:
       return state;
   }
 };
+
+export const useUserContext = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
@@ -86,6 +108,20 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const editUser = async (userId, updatedUserData) => {
+    try {
+      const updatedUser = await editUserService(
+        apiUrl,
+        userId,
+        updatedUserData
+      );
+      dispatch({ type: "UPDATE_USER_SUCCESS", payload: updatedUser });
+    } catch (error) {
+      dispatch({ type: "UPDATE_USER_FAILURE", payload: error.message });
+      throw error; // Propagate the error for handling in components
+    }
+  };
+
   const handleDeleteUser = async (userId) => {
     try {
       await deleteUserService(apiUrl, userId);
@@ -96,14 +132,21 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const setSelectedUser = (user) => {
+    dispatch({ type: "SET_SELECTED_USER", payload: user });
+  };
+
   return (
     <UserContext.Provider
       value={{
         users: state.users,
         loading: state.loading,
         error: state.error,
-        addUserService,
+        selectedUser: state.selectedUser,
+        editUser,
+        addUser,
         handleDeleteUser,
+        setSelectedUser,
       }}
     >
       {children}
