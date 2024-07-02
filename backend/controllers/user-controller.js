@@ -17,7 +17,6 @@ export async function getUsers(req, res) {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
-  console.log(`Page: ${page}, Limit: ${limit}, Skip: ${skip}`); // Debug statement
 
   try {
     const users = await User.find().skip(skip).limit(limit);
@@ -26,14 +25,13 @@ export async function getUsers(req, res) {
       users,
       total,
       page,
-      pages: Math.ceil(total / limit)
+      pages: Math.ceil(total / limit),
     });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
 }
-
 
 export async function addCustomer(req, res) {
   res.send("Add Customer Page");
