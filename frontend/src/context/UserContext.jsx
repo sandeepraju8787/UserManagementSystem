@@ -83,12 +83,13 @@ export const useUserContext = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
-  const apiUrl = "http://localhost:4000/api/users"; // Default to localhost
+  const apiUrl =
+    import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:4000/api/users"; // Default to localhost
 
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const users = await fetchUsers(apiUrl);
+        const { users } = await fetchUsers(apiUrl);
         dispatch({ type: "FETCH_USERS_SUCCESS", payload: users });
       } catch (error) {
         dispatch({ type: "FETCH_USERS_FAILURE", payload: error.message });

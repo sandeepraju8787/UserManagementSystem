@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_REACT_APP_API_URL=http://backend:4001/api/users
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4004"
+    environment:
+      - MONGODB_URI=mongodb+srv://sandeeprajunet:A1Nupudb19n842bO@cluster0.0m66jxn.mongodb.net/?retryWrites=true&w=majority
+      - PORT=4000
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

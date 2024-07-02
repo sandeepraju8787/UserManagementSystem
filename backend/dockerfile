@@ -1,0 +1,23 @@
+# Use a Node.js base image
+FROM node:18-alpine
+
+# Set working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --production
+
+# Copy the rest of the application code to the working directory
+COPY . .
+
+# Environment variable for MongoDB URI
+ENV MONGODB_URI="mongodb+srv://sandeeprajunet:A1Nupudb19n842bO@cluster0.0m66jxn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+# Default port if not provided, can be overridden at runtime
+ENV PORT=4000
+
+# Command to run the application using npm start with port environment variable
+CMD ["npm", "start"]

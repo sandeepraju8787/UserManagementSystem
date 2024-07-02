@@ -8,11 +8,12 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = 4004;
+const FRONTEND_PORT = process.env.FRONTEND_PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: `http://localhost:${FRONTEND_PORT}`,
 };
 
 app.use(cors(corsOptions));
