@@ -4,17 +4,18 @@ import { useForm } from "../hooks/useForm";
 import { useUserContext } from "../context/UserContext";
 
 const UserFormModal = () => {
-  const { addUser, editUser, selectedUser, setSelectedUser } = useUserContext(); // Using context for state management
+  const { addUser, editUser, selectedUser, setSelectedUser } = useUserContext();
   const { values, setValues, handleChange, resetForm } = useForm({
     firstName: "",
     lastName: "",
     email: "",
   });
   const [show, setShow] = useState(false);
+  const [validated, setValidated] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     if (selectedUser) {
-      // If selectedUser is set, populate form fields for editing
       setValues({
         firstName: selectedUser.firstName || "",
         lastName: selectedUser.lastName || "",
@@ -22,7 +23,6 @@ const UserFormModal = () => {
       });
       setShow(true);
     } else {
-      // Clear form fields if no selectedUser (for adding new user)
       setValues({
         firstName: "",
         lastName: "",
@@ -30,26 +30,52 @@ const UserFormModal = () => {
       });
       setShow(false);
     }
+    setValidated(false); // Reset validation state on modal show/hide
+    setSubmitted(false); // Reset submission state on modal show/hide
   }, [selectedUser, setValues]);
 
   const handleClose = () => {
     setShow(false);
     resetForm();
     setSelectedUser(null);
+    setValidated(false);
+    setSubmitted(false);
   };
 
   const handleShow = () => {
     setShow(true);
   };
 
-  const handleSubmit = (e) => {
-    // e.preventDefault();
-    if (selectedUser) {
-      editUser(selectedUser._id, values);
-    } else {
-      addUser(values);
+  const validateFirstName = () => {
+    // Only alphabetical characters, max length 100
+    return (
+      /^[a-zA-Z]+$/.test(values.firstName) && values.firstName.length <= 100
+    );
+  };
+
+  const validateLastName = () => {
+    // Only alphabetical characters, max length 100
+    return /^[a-zA-Z]+$/.test(values.lastName) && values.lastName.length <= 100;
+  };
+
+  const validateEmail = () => {
+    // Basic email format validation
+    return /\S+@\S+\.\S+/.test(values.email);
+  };
+
+  const handleSubmit = () => {
+    const isValid =
+      validateFirstName() && validateLastName() && validateEmail();
+    setValidated(true); // Trigger validation feedback
+    if (isValid) {
+      if (selectedUser) {
+        editUser(selectedUser._id, values);
+      } else {
+        addUser(values);
+      }
+      handleClose(); // Close modal on successful submission
     }
-    handleClose();
+    setSubmitted(true); // Mark form as submitted
   };
 
   return (
@@ -63,7 +89,7 @@ const UserFormModal = () => {
           <Modal.Title>{selectedUser ? "Edit User" : "Add User"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form noValidate validated={validated}>
             <Form.Group as={Row} className="mb-3" controlId="formFirstName">
               <Form.Label column sm="3">
                 First Name
@@ -75,7 +101,12 @@ const UserFormModal = () => {
                   name="firstName"
                   value={values.firstName}
                   onChange={handleChange}
+                  isInvalid={!validateFirstName() && submitted}
                 />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid first name (alphabets only, max 100
+                  characters).
+                </Form.Control.Feedback>
               </Col>
             </Form.Group>
 
@@ -90,7 +121,12 @@ const UserFormModal = () => {
                   name="lastName"
                   value={values.lastName}
                   onChange={handleChange}
+                  isInvalid={!validateLastName() && submitted}
                 />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid last name (alphabets only, max 100
+                  characters).
+                </Form.Control.Feedback>
               </Col>
             </Form.Group>
 
@@ -105,7 +141,11 @@ const UserFormModal = () => {
                   name="email"
                   value={values.email}
                   onChange={handleChange}
+                  isInvalid={!validateEmail() && submitted}
                 />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid email address.
+                </Form.Control.Feedback>
               </Col>
             </Form.Group>
 
@@ -113,7 +153,7 @@ const UserFormModal = () => {
               id="addUser"
               variant="outline-primary"
               className="action-btn"
-              type="submit"
+              type="button" // Use type="button" to prevent form submission on click
               onClick={handleSubmit}
             >
               {selectedUser ? "Update" : "Submit"}

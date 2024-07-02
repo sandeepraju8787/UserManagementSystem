@@ -49,7 +49,7 @@ const userReducer = (state, action) => {
     case "DELETE_USER_SUCCESS":
       return {
         ...state,
-        users: state.users.filter((user) => user.id !== action.payload),
+        users: state.users.filter((user) => user._id !== action.payload),
       };
     case "DELETE_USER_FAILURE":
       return {
