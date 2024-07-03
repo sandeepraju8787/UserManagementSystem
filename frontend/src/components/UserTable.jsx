@@ -59,7 +59,7 @@ const UserTable = () => {
           ))}
         </tbody>
       </Table>
-      <CustomPagination />
+      {/* <CustomPagination /> */}
     </>
   );
 };
