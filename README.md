@@ -83,7 +83,11 @@
  ### Instructions to RUN the project Locally
  - Ensure docker is running on your system
  - Clone the repo from the Link provided
- - **Send your IP to me over email for whitelisting, only then you will be able to access the mongodb which I have hosted on Cloud**
+   - ```cd <desired_path>```
+   - ```git clone https://github.com/sandeepraju8787/UserManagementSystem.git```
+   - ```cd UserManagementSystem```
+   - ```git checkout main```
+ - **Please send your IP to me over email(sandeepraju.net@gmail.com) for whitelisting, only then you will be able to access the mongodb which I have hosted on Cloud**
  - ```cd <project_root_path>```
  - ```make up``` **to start the whole application locally**
  - ```make down``` **to stop the whole application**
