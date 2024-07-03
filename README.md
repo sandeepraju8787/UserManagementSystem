@@ -40,3 +40,9 @@
 
 
 ## High Level Design
+![Highleveldesign](https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/84595f94-4ddc-4a9f-84d9-b99e43907bd8)
+
+## Low Level Design
+
+### Frontend
+![FE_LLD](https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/a36a669a-d11f-4207-a057-3be61cef5040)
