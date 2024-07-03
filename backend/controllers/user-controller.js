@@ -1,5 +1,3 @@
-// backend/controllers/user-controller.js
-
 import User from "../models/User.js";
 
 export async function homepage(req, res) {
@@ -126,7 +124,7 @@ export async function deleteCustomer(req, res) {
       return res.status(404).json({ msg: "User not found" });
     }
 
-    await User.deleteOne({ _id: user._id }); // Use User.deleteOne to delete the user
+    await User.deleteOne({ _id: user._id });
 
     res.json({ msg: "User removed" });
   } catch (err) {

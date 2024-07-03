@@ -1,5 +1,3 @@
-// src/hooks/useForm.jsx
-
 import { useState } from "react";
 
 export const useForm = (initialValues) => {

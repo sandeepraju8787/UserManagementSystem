@@ -47,35 +47,32 @@ const UserFormModal = () => {
   };
 
   const validateFirstName = () => {
-    // Only alphabetical characters, max length 100
     return (
       /^[a-zA-Z]+$/.test(values.firstName) && values.firstName.length <= 100
     );
   };
 
   const validateLastName = () => {
-    // Only alphabetical characters, max length 100
     return /^[a-zA-Z]+$/.test(values.lastName) && values.lastName.length <= 100;
   };
 
   const validateEmail = () => {
-    // Basic email format validation
     return /\S+@\S+\.\S+/.test(values.email);
   };
 
   const handleSubmit = () => {
     const isValid =
       validateFirstName() && validateLastName() && validateEmail();
-    setValidated(true); // Trigger validation feedback
+    setValidated(true);
     if (isValid) {
       if (selectedUser) {
         editUser(selectedUser._id, values);
       } else {
         addUser(values);
       }
-      handleClose(); // Close modal on successful submission
+      handleClose();
     }
-    setSubmitted(true); // Mark form as submitted
+    setSubmitted(true);
   };
 
   return (
@@ -153,7 +150,7 @@ const UserFormModal = () => {
               id="addUser"
               variant="outline-primary"
               className="action-btn"
-              type="button" // Use type="button" to prevent form submission on click
+              type="button"
               onClick={handleSubmit}
             >
               {selectedUser ? "Update" : "Submit"}

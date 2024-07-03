@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
 import UserFormModal from "./UserFormModal.jsx";
-import "../index.css"; // Adjust path as needed
+import "../index.css";
 
 const AppNavbar = () => {
   return (

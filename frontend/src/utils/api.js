@@ -11,7 +11,6 @@ export const fetchUsers = async (apiUrl) => {
   }
 };
 
-// Function to add a new user
 export const addUser = async (apiUrl, user) => {
   try {
     const response = await fetch(`${apiUrl}/add`, {
@@ -49,7 +48,6 @@ export const editUser = async (apiUrl, userId, updatedUserData) => {
   }
 };
 
-// Function to delete a user by ID
 export const deleteUser = async (apiUrl, userId) => {
   try {
     const response = await fetch(`${apiUrl}/users/${userId}`, {

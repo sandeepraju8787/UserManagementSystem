@@ -1,5 +1,3 @@
-// context/UserContext.js
-
 import { createContext, useReducer, useContext, useEffect } from "react";
 import {
   fetchUsers,
@@ -7,9 +5,6 @@ import {
   editUser as editUserService,
   deleteUser as deleteUserService,
 } from "../utils/api.js";
-// import dotenv from "dotenv";
-
-// dotenv.config();
 
 export const UserContext = createContext();
 
@@ -84,7 +79,7 @@ export const useUserContext = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
   const apiUrl =
-    import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:4000/api/users"; // Default to localhost
+    import.meta.env.VITE_REACT_APP_API_URL || "http://localhost:4000/api/users";
 
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -105,7 +100,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: "ADD_USER_SUCCESS", payload: newUser });
     } catch (error) {
       dispatch({ type: "ADD_USER_FAILURE", payload: error.message });
-      throw error; // Propagate the error for handling in components
+      throw error;
     }
   };
 
@@ -119,7 +114,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: "UPDATE_USER_SUCCESS", payload: updatedUser });
     } catch (error) {
       dispatch({ type: "UPDATE_USER_FAILURE", payload: error.message });
-      throw error; // Propagate the error for handling in components
+      throw error;
     }
   };
 
@@ -129,7 +124,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: "DELETE_USER_SUCCESS", payload: userId });
     } catch (error) {
       dispatch({ type: "DELETE_USER_FAILURE", payload: error.message });
-      throw error; // Propagate the error for handling in components
+      throw error;
     }
   };
 

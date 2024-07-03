@@ -1,5 +1,3 @@
-// backend/routes/routes.js
-
 import { Router } from "express";
 import {
   homepage,
@@ -10,7 +8,7 @@ import {
   editPost,
   deleteCustomer,
   getUsers,
-} from "../controllers/user-controller.js"; // Adjust the path based on your controller file
+} from "../controllers/user-controller.js";
 
 const router = Router();
 

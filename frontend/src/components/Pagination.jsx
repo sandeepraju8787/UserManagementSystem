@@ -1,13 +1,11 @@
 import { Pagination } from "react-bootstrap";
 
 const CustomPagination = ({ currentPage, totalPages, onPageChange }) => {
-  // Calculate the range of page numbers to display
   const range = (start, end) => {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
-  // Define the number of pages to display
-  const pageRange = 5; // Adjust as needed
+  const pageRange = 5;
 
   // Calculate the start and end of the page numbers
   let startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
