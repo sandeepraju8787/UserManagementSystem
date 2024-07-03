@@ -16,7 +16,6 @@ export async function getUsers(req, res) {
   let page = parseInt(req.query.page) || 1;
   let limit = parseInt(req.query.limit) || 10;
   let skip = (page - 1) * limit;
-  console.log(`Page: ${page}, Limit: ${limit}, Skip: ${skip}`); // Debug statement
 
   try {
     const total = await User.countDocuments();

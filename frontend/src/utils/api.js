@@ -14,7 +14,6 @@ export const fetchUsers = async (apiUrl) => {
 // Function to add a new user
 export const addUser = async (apiUrl, user) => {
   try {
-    console.log(`${apiUrl}/add`);
     const response = await fetch(`${apiUrl}/add`, {
       method: "POST",
       headers: {
@@ -34,7 +33,6 @@ export const addUser = async (apiUrl, user) => {
 
 export const editUser = async (apiUrl, userId, updatedUserData) => {
   try {
-    console.log(`${apiUrl}/edit/${userId}`);
     const response = await fetch(`${apiUrl}/edit/${userId}`, {
       method: "PUT",
       headers: {
@@ -58,7 +56,6 @@ export const deleteUser = async (apiUrl, userId) => {
       method: "DELETE",
     });
     if (!response.ok) {
-      console.log(userId + "is this" + `${apiUrl}/${userId}`);
       throw new Error("Failed to delete user");
     }
     return userId;
