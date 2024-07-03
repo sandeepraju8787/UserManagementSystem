@@ -88,3 +88,12 @@
  - ```make up``` **to start the whole application locally**
  - ```make down``` **to stop the whole application**
  - ```make restart``` **to restart the whole application**
+
+### Application Screenshots 
+<img width="760" alt="Screenshot 2024-07-03 at 2 11 16 PM" src="https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/a308c85d-6efd-4bb5-8866-7aae9f5b114e">
+
+<img width="760" alt="Screenshot 2024-07-03 at 2 07 02 PM" src="https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/5f5adee0-2c97-4dfd-88b0-1a314380939f">
+
+<img width="760" alt="Screenshot 2024-07-03 at 2 05 48 PM" src="https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/1f5a94f6-42d9-45fd-8cb1-5d212704e7ba">
+
+<img width="760" alt="Screenshot 2024-07-03 at 2 04 00 PM" src="https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/429caaa7-5867-4d08-a04a-236860960427">
