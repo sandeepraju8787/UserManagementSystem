@@ -1,4 +1,4 @@
-# User Management System
+# SimplyManage : User Management System 
 ### Functional requirements:
 
 - Implement a simple website for managing users;
