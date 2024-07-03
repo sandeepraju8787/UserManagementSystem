@@ -45,4 +45,46 @@
 ## Low Level Design
 
 ### Frontend
-![FE_LLD](https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/a36a669a-d11f-4207-a057-3be61cef5040)
+![FE_LLD](https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/46b0a8ac-d680-497b-8170-fe85478affbc)
+
+#### States to be managed
+  - State Variables
+    - users
+    - loading
+    - error
+    - selectedUser
+    - currentPage
+
+  - Callbacks
+    - fetchUsers
+    - setCurrentPage 
+    - editUser
+    - addUser
+    - handleDeleteUser
+    - setSelectedUser
+
+### Backend
+  ![Backend_LLD](https://github.com/sandeepraju8787/UserManagementSystem/assets/65300002/83d84556-1419-4b7a-8446-b72eaabb728e)
+
+### In Scope 
+- Bonus features added for scalability
+  - **Backend Pagination** ( for fetching data in chunks for larger volumes of data )
+  - **Makefile** for running the whole project with just one command
+  - Unit Tests using Jest
+    
+
+### Out Of Scope 
+- Planned features for scalability and security
+  - **Frontend Pagination** ( for fetching data in chunks for larger volumes of data)
+  - Rate Limiting Middleware  using ***'express-rate-limit'*** for limiting requests from an IP. 
+  - ***Authentication modules** for both frontend and backend.
+
+
+ ### Instructions to RUN the project Locally
+ - Ensure docker is running on your system
+ - Clone the repo from the Link provided
+ - **Send your IP to me over email for whitelisting, only then you will be able to access the mongodb which I have hosted on Cloud**
+ - ```cd <project_root_path>```
+ - ```make up``` **to start the whole application locally**
+ - ```make down``` **to stop the whole application**
+ - ```make restart``` **to restart the whole application**
